@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script src="https://unpkg.com/framer-motion@5.11.3/dist/framer-motion.umd.min.js"></script>
+  <title>My Website</title>
+
+
+  <style>*:before,
+    *:after {
+        box-sizing: border-box;
+        border-radius: 20px 20px 0 0;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+        background: #433ca3;
+    }
+
+
+
+
+
+	.sign-out {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .sign-out a {
+            font-size: 16px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+    
+    input,
+    
+    
+    .tip {
+        font-size: 20px;
+        margin: 40px auto 50px;
+        text-align: center;
+    }
+    
+    .cont {
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 480px;
+  border-radius: 20px;
+  background: #fff;
+}
+    
+.form {
+        position: relative;
+        width: 690px;
+        height: 100%;
+        -webkit-transition: -webkit-transform 1.2s ease-in-out;
+        transition: -webkit-transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+        padding: 50px 5px 0;
+    }
+    
+    .sub-cont {
+        overflow: hidden;
+        position: absolute;
+        left: 690px;
+        top: 0;
+        width: 990px;
+        height: 100%;
+        padding-left: 260px;
+        background: #fff;
+        -webkit-transition: -webkit-transform 1.2s ease-in-out;
+        transition: -webkit-transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+    }
+    
+    .cont.s--signup .sub-cont {
+        -webkit-transform: translate3d(-640px, 0, 0);
+        transform: translate3d(-640px, 0, 0);
+    }
+    
+    button {
+        
+    	padding: 1rem;
+    	background-color: #4a5568;
+    	color: white;
+    	border: none;
+    	border-radius: 0.375rem;
+    	cursor: pointer;
+    	transition: background-color 0.3s ease, transform 0.3s ease;
+    	z-index: 11; /* Ensure the button is above other elements */
+        
+        
+        
+        color: #ffffff;
+        margin-left: 155px;
+        
+        font-size: 15px;
+        cursor: pointer;
+    }
+    
+    .img {
+        overflow: hidden;
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 360px;
+        height: 100%;
+        padding-top: 360px;
+    }
+    .img:before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 900px;
+        height: 100%;
+        background-image: url("ext.jpg");
+        opacity: .8;
+        background-size: cover;
+        -webkit-transition: -webkit-transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+    }
+    
+    .img:after {
+        content: '';
+        position: absolute;
+        left: 0px;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255);
+ }
+    
+    .cont.s--signup .img:before {
+        -webkit-transform: translate3d(640px, 0, 0);
+        transform: translate3d(640px, 0, 0);
+    }
+    
+    .img__text {
+        z-index: 2;
+        position: absolute;
+        left: 20px;
+        top: 250px;
+        width: 100%;
+        padding: 0 20px;
+        text-align: center;
+        color: #fff;
+        -webkit-transition: -webkit-transform 1.2s ease-in-out;
+        transition: -webkit-transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+    }
+    
+    .img__text h2 {
+        margin-bottom: 10px;
+        font-weight: normal;
+    }
+    
+    .img__text p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .cont.s--signup .img__text.m--up {
+        -webkit-transform: translateX(520px);
+        transform: translateX(520px);
+    }
+    
+    .img__text.m--in {
+        -webkit-transform: translateX(-520px);
+        transform: translateX(-520px);
+    }
+    
+    .cont.s--signup .img__text.m--in {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    
+    .img__btn {
+        overflow: hidden;
+        z-index: 2;
+        position: relative;
+        width: 100px;
+        height: 36px;
+        margin: 0 auto;
+        background: transparent;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 15px;
+        cursor: pointer;
+    }
+    
+    .img__btn:after {
+        content: '';
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #fff;
+        border-radius: 30px;
+    }
+    
+    .img__btn span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: -webkit-transform 1.2s;
+        transition: -webkit-transform 1.2s;
+        transition: transform 1.2s;
+        transition: transform 1.2s, -webkit-transform 1.2s;
+    }
+    
+    .img__btn span.m--in {
+        -webkit-transform: translateY(-72px);
+        transform: translateY(-72px);
+    }
+    
+    .cont.s--signup .img__btn span.m--in {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    
+    .cont.s--signup .img__btn span.m--up {
+        -webkit-transform: translateY(72px);
+        transform: translateY(72px);
+    }
+    
+    h2 {
+        width: 100%;
+        font-size: 26px;
+        text-align: center;
+    }
+    .yp {
+        position: absolute;
+        top: 10%;
+        left: 63px;
+        font-size: 22px;}
+        .error {
+    position: absolute;
+    top: 56%;
+    color: red;
+    left: 140px; /* Set the left to 50% */
+    font-size: 15px;
+    transform: translateX(-50%); /* Move the element back by 50% of its own width */
+}
+    .yp2 {
+        position: absolute;
+        top: 41%;
+        left: 125px;
+        font-size: 18px;
+   
+        
+    }
+    label {
+        display: block;
+        width: 260px;
+        margin: 25px auto 0;
+        text-align: center;
+    }
+    
+    label span {
+        font-size: 12px;
+        color: #cfcfcf;
+        text-transform: uppercase;
+    }
+    
+    input {
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+        padding-bottom: 5px;
+        font-size: 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+        text-align: center;
+    }
+    
+
+    
+    .submit {
+      margin-top: 40px;
+        margin-bottom: 20px;
+        background: #433ca3;
+        text-transform: uppercase;
+    }
+    
+    .fb-btn {
+        border: 2px solid #d3dae9;
+        color: #8fa1c7;
+    }
+    
+    .fb-btn span {
+        font-weight: bold;
+        color: #455a81;
+    }
+    
+    .sign-in {
+        -webkit-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+    }
+    .blue-circle {
+      background: rgba(255,255,255);
+      border: 2px solid #555050; 
+      border-radius: 16%;
+      width: 95px;
+      height: 95px;
+      text-align: center;
+      
+      font-size: 80px;
+      color: rgb(26, 26, 26);
+      position: absolute;
+      top: 27%;
+      left: 145px;
+      transform: translate(-50%, -50%);
+    }
+
+    #recognized-gesture {
+
+  
+  font-size: 70px;
+  color: rgb(26, 26, 26);
+}
+    .small-circle {
+      background: rgba(255,255,255);
+      border: 2px solid #555050; 
+      border-radius: 20%;
+      width: 33px;
+      height: 33px;
+      text-align: center;
+      font-size: 24px;
+      color: rgb(26, 26, 26);
+      position: absolute;
+      top: 51%;
+      left: 70px;
+      transform: translate(-50%, -50%);
+    }
+    .small-circle1 {
+      background: rgba(255,255,255);
+      border: 2px solid #555050; 
+      border-radius: 20%;
+      width: 33px;
+      height: 33px;
+      text-align: center;
+      font-size: 24px;
+      color: rgb(26, 26, 26);
+      position: absolute;
+      top: 51%;
+      left: 120px;
+      transform: translate(-50%, -50%);
+    }
+    .small-circle2 {
+      background: rgba(255,255,255);
+      border: 2px solid #555050; 
+      border-radius: 20%;
+      width: 33px;
+      height: 33px;
+      text-align: center;
+      font-size: 24px;
+      color: rgb(26, 26, 26);
+      position: absolute;
+      top: 51%;
+      left: 170px;
+      transform: translate(-50%, -50%);
+    }
+    .small-circle3 {
+      background: rgba(255,255,255);
+      border: 2px solid #555050; 
+      border-radius: 20%;
+      width: 33px;
+      height: 33px;
+      text-align: center;
+      font-size: 24px;
+      color: rgb(22, 22, 22);
+      position: absolute;  
+      top: 51%;
+      left: 220px;
+      transform: translate(-50%, -50%);
+    }
+    .cont.s--signup .sign-in {
+        -webkit-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+        -webkit-transition-duration: 1.2s;
+        transition-duration: 1.2s;
+        -webkit-transform: translate3d(640px, 0, 0);
+        transform: translate3d(640px, 0, 0);
+    }
+    
+    
+    
+    .cont.s--signup .sign-up {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    #message {
+        display:none;
+        background: #f1f1f1;
+        color: #000;
+        position: relative;
+        padding: 20px;
+        margin-top: 10px;
+      }
+      
+      #message p {
+        padding: 10px 35px;
+        font-size: 18px;
+      }
+      
+      /* Add a green text color and a checkmark when the requirements are right */
+      .valid {
+        color: green;
+      }
+      
+      .valid:before {
+        position: relative;
+        left: -35px;
+        content: "&#10004;";
+      }
+      
+      /* Add a red text color and an "x" icon when the requirements are wrong */
+      .invalid {
+        color: red;
+        
+        left: 85px;
+        top: 51%
+      }
+      .rounded-camera-feed {
+    border-radius: 20px; 
+    left: 50%;
+      margin-top: -50px;
+    margin-left: 20px; }
+      .invalid:before {
+        position: relative;
+        left: 56%;
+        content: "&#10006;";
+      }
+
+      
+</style>
+  <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script> <!-- Include Socket.IO library -->
+  <script>
+    const socket = io.connect(); // Connect to the Socket.IO server
+
+    socket.on('gesture', function(data) {
+    console.log('Received gesture:', data);
+    document.getElementById('recognized-gesture').textContent = '' + data;
+});
+
+    socket.on('lst', function(data1) {
+    console.log('Received lst:', data1);
+    document.getElementById('square1').textContent = '' +data1[0];
+    document.getElementById('square2').textContent = '' +data1[1];
+    document.getElementById('square3').textContent = '' +data1[2];
+    document.getElementById('square4').textContent = '' +data1[3];
+});
+
+
+  </script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-blue-700 relative">
+
+        <!-- Logo on top left, 50% bigger -->
+        <div class="absolute top-4 left-4">
+            <img src='static/signLogo.png' alt="Logo" style="width: 40%; height: 40%;">
+        </div>
+
+        <!-- Title on top left -->
+        <div class="absolute top-4 left-4 flex flex-col items-start" style="margin-top: 164px;">
+            <h1 class='font-extrabold leading-tighter tracking-tighter mb-4 focus-highlight-animation text-white text-xl' style='margin-left: -5px; font-size: 17px;'>
+                Sign in with a Wave
+            </h1>
+        </div>
+<div class="cont">
+      <div class="form sign-in">
+        
+         
+        <img src="{{ url_for('video_feed') }}" height="80%"  width="95%" class="rounded-camera-feed">
+      </div>
+  
+    <div class="sub-cont">
+      <h2>Current </h2>
+      <div class="yp">Current Gesture</div>
+                
+                <div id="recognized-gesture" class="blue-circle"></div>
+                <div class="yp2">OTP</div>
+                <div  id="square1" class="small-circle" ></div>
+                
+                <div  class="small-circle1" id="square2"></div>
+
+                <div  class="small-circle2" id="square3"></div>
+        
+                <div  class="small-circle3" id="square4"></div>
+                <div class='error' id="message-container"></div>
+                <!-- <div class="error">{{ msg }}</div> -->
+                <div class="img__text m--in">
+    
+                  <div class="img__text m--up"></div>
+                  <h2>.</h2>
+                 
+                <button onclick="redirectTobutton()" style="width: 150px; margin-top: -5px; margin-right: -135px;" class="w-full p-3 text-ls font-bold text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring highlightable mt-2">
+
+		Return
+</button>
+                </label>
+           </div>
+          </div> </div>
+
+            <!-- Sign Out button -->
+    <div class="absolute top-4 right-4 flex space-x-6" style="margin-right: 15px;">
+
+    <!-- Sign Out button -->
+    <a href='/home' onclick="event.preventDefault(); navigate('/homes');" class='font-medium font-bold text-white hover:text-gray-300'>
+        Sign Out
+    </a>
+
+	<a href='#' onclick="openContactDialog()" class='font-medium font-bold text-white hover:text-gray-300'>
+            Contact Us
+        </a>
+</div>
+
+<!-- Contact Us Dialog -->
+<div id="contactDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-8 rounded-md max-w-md" id="contactDialogContent">
+        <div class="zoom-container">
+            <p class="text-lg text-gray-800">We are a group of four enthusiastic programmers named Karmel, Haya, Razan, and Layan. 
+            We think that in a world full of advancements and technology, any individual in this society, no matter their background, 
+            should authenticate themselves safely. Please get in touch with us at: <br>
+            Phone number: +966-58-226-6073
+            <br>Email: signwithawave@gmail.com</p>
+        </div>
+        <button id="closeButton" onclick="closeContactDialog()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md" style="margin-left: 0px;">Close</button>
+    </div>
+</div>
+ 
+
+  <script>
+
+ function navigate(url) {
+        window.location.href = url;
+    }
+
+    // Function to handle Sign Out button click
+    document.querySelector('.sign-out a').addEventListener('click', function (event) {
+        event.preventDefault();
+        navigate('/home');
+    });
+
+    function redirectTobutton() {
+            // Redirect to the login page or route
+            window.location.href = '/buttonpage'; // Change '/signin_page' to the appropriate route
+        }
+
+    function closeCamera() {
+        // Check if the camera stream is active and close it
+        if (window.stream) {
+            window.stream.getTracks().forEach(track => track.stop());
+        }
+    }
+
+     // Functions for Contact Us Dialog
+        function openContactDialog() {
+            document.getElementById('contactDialog').style.display = 'flex';
+        }
+
+        function closeContactDialog() {
+            document.getElementById('contactDialog').style.display = 'none';
+        }
+
+
+    
+    document.querySelector('.sign-out a').addEventListener('click', function (event) {
+        event.preventDefault();
+    });
+
+  // Function to display and remove the message after 1 second
+  function displayMessage(message) {
+    const messageContainer = document.getElementById('message-container');
+    messageContainer.textContent = message;
+
+    setTimeout(function () {
+      messageContainer.textContent = '';
+    }, 3000); // Remove message after 1 second (1000 milliseconds)
+  }
+
+  // Listen for the 'wrong_attempt' event
+  socket.on('wrong_attempt', function() {
+    displayMessage('Wrong OTP entered. '); // Display message in the container
+  });
+  socket.on('trail_completed', function () {
+        displayMessage('Max tries reached, resend OTP.'); // Display error message in red for 2 seconds
+        setTimeout(function () {
+            window.location.href = '/buttonpage'; // Redirect to button page after 2 seconds
+        }, 3000);
+   // Wait for 2 seconds before redirecting
+  });
+  socket.on('gesture_empty', function () {
+        displayMessage('No OTP Present.'); // Display error message in red for 2 seconds
+        setTimeout(function () {
+            window.location.href = '/buttonpage'; // Redirect to button page after 2 seconds
+        }, 3000);
+   // Wait for 2 seconds before redirecting
+    });
+  // Other socket event listeners...
+</script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+
+      <script>
+        var socketi = io.connect('http://' + document.domain + ':' + location.port);    
+        socketi.on('gesture_completed', function() {
+            window.location.href = '/success_page';
+        });
+      </script>
+
+
+  </body>
+  </html>

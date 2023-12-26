@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Tailwind CSS stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        .focus-highlight {
+            outline: 2px solid orange;
+            outline-offset: -2px;
+        }
+
+        /* Additional style for the dialog */
+        #contactDialog {
+            display: none;
+        }
+
+        #contactDialog .dialog-content {
+            background-color: #fff;
+            padding: 1em;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <title>OTP Page</title>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-blue-700 relative">
+
+    <!-- Logo and Title container on absolute left -->
+    <div class="absolute top-4 left-4 flex-col items-start"">
+        <img src='static/signLogo.png' alt="Logo" style="width: 40%; height: 40%;">
+        <h1 class='font-extrabold leading-tighter tracking-tighter mb-4 focus-highlight-animation text-white text-xl' style='margin-left: -5px;'>
+            Sign in with a Wave
+        </h1>
+    </div>
+
+    <!-- Top right buttons container -->
+    <div class="absolute top-4 right-4 flex space-x-6" style="margin-right: 15px;">
+
+        <!-- Accessibility button -->
+        <button onclick="openAccessibilityDialog()" class='font-medium text-white hover:text-gray-300 highlightable' id="accessibilityButton">
+            Accessibility
+        </button>
+
+        <!-- Contact Us button -->
+        <button onclick="openContactDialog()" class='font-medium text-white hover:text-gray-300 highlightable'>
+            Contact Us
+        </button>
+
+        <!-- Sign Out button -->
+        <a href='/home' onclick="event.preventDefault(); navigate('/homes');" class='font-medium text-white hover:text-gray-300 highlightable'>
+            Sign Out
+        </a>
+    </div>
+
+    <!-- OTP Page Content -->
+    <div class="bg-white p-10 rounded-xl shadow-2xl w-96 relative" id="otpContent">
+
+       
+
+        <h1 class="text-3xl font-bold text-center mb-4 highlightable" id="welcomeMessage">Welcome, {{ username }}!</h1>
+        <p class="text-gray-500 mb-8 text-center highlightable">
+            An OTP has been sent to your email. Please check your inbox and open the camera.
+        </p>
+        <p class="text-gray-500 mb-8 text-center" id="otpMessage">
+        </p>
+
+        <!-- Buttons Section with dynamic sizing -->
+        <div class="flex flex-col items-center space-y-4">
+            <button onclick="redirectTocamera()" class="w-full p-3 text-lg font-bold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring highlightable">
+                Open Camera
+            </button>
+            <button id="otpButton" class="w-full p-3 text-lg font-bold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring highlightable">
+                Resend OTP
+            </button>
+        </div>
+    </div>
+
+    <!-- Accessibility Dialog -->
+    <div id="accessibilityDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="dialog-content bg-white p-8 rounded-md text-center">
+            <button onclick="toggleZoomButton()" class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 rounded px-4 py-2' id="zoomButtonDialog">
+                Zoom In
+            </button>
+            <button onclick="focusElements()" class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 rounded px-4 py-2' id="focusButton">
+                Focus
+            </button>
+            <button onclick="closeAccessibilityDialog()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+        </div>
+    </div>
+
+    <!-- Contact Us Dialog -->
+<div id="contactDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-8 rounded-md max-w-md" id="contactDialogContent">
+        <div class="zoom-container">
+            <p class="text-lg text-gray-800">We are a group of four enthusiastic programmers named Karmel, Haya, Razan, and Layan. 
+            We think that in a world full of advancements and technology, any individual in this society, no matter their background, 
+            should authenticate themselves safely. Please get in touch with us at: <br>
+            Phone number: +966-58-226-6073
+            <br>Email: signwithawave@gmail.com</p>
+        </div>
+        <button id="closeButton" onclick="closeContactDialog()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+    </div>
+</div>
+
+    <script>
+    document.querySelectorAll('a').forEach(function (element) {
+        element.addEventListener('click', function (event) {
+            event.preventDefault();
+            navigate(element.getAttribute('href'));
+        });
+    });
+
+    // Extract username from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+
+    // Check if the username is available
+    if (username) {
+        // Display personalized welcome message
+        const welcomeMessage = document.querySelector('.bg-white h1');
+        welcomeMessage.textContent = `Welcome, ${username}!`;
+    } else {
+        console.error('Username not found in URL parameters');
+    }
+    function navigate(url) {
+        window.location.href = url; // Redirect to the specified URL
+    }
+
+    function redirectTocamera() {
+        // Redirect to the camera page or route
+        window.location.href = '/camera'; // Change '/camera' to the appropriate route
+    }
+
+    function redirectTologin() {
+        // Redirect to the login page or route
+        window.location.href = '/signin_page'; // Change '/signin_page' to the appropriate route
+    }
+
+    function toggleZoomButton() {
+    try {
+        const otpContent = document.getElementById('otpContent');
+        const signOutButton = document.querySelector('.absolute.top-4.right-4');
+        const contactButton = document.querySelector('.absolute.bottom-4.left-4');
+        const accessibilityButton = document.getElementById('accessibilityButton');
+
+        const zoomButton = document.getElementById('zoomButtonDialog');
+        const isZoomed = otpContent.style.fontSize === '2em';
+
+        if (zoomButton.textContent === 'Zoom In') {
+            document.body.classList.add('overflow-hidden'); // Hide overflow
+	    contactDialogContent.style.transform = 'scale(1.2)';
+            contactDialogContent.style.width = '120%';
+	    contactDialogContent.querySelector('p').style.paddingLeft = '8px';
+	    closeButton.style.position = 'relative';
+            closeButton.style.top = '10px';
+            zoomButton.textContent = 'Zoom Out';
+            otpContent.style.fontSize = '2em';
+            welcomeMessage.style.fontSize = '1.5em'; // Added line to adjust welcome message size
+            signOutButton.style.transform = 'scale(1.2)';
+            contactButton.style.transform = 'scale(1.2)';
+            accessibilityButton.style.transform = 'scale(1.2)';
+        } else {
+            document.body.classList.remove('overflow-hidden'); // Show overflow
+	    contactDialogContent.style.transform = 'scale(1)';
+            contactDialogContent.querySelector('p').style.paddingLeft = '0px';
+            zoomButton.textContent = 'Zoom In';
+            otpContent.style.fontSize = ''; // Reset to default size
+            welcomeMessage.style.fontSize = '';
+            signOutButton.style.transform = 'scale(1)';
+            contactButton.style.transform = 'scale(1)';
+            accessibilityButton.style.transform = 'scale(1)';
+        }
+    } catch (error) {
+        console.error('Error in toggleZoomButton:', error);
+    }
+}
+
+
+    function openContactDialog() {
+        try {
+            const contactDialog = document.getElementById('contactDialog');
+            contactDialog.style.display = 'flex';
+
+            // Apply focus styling to the "Contact Us" button
+            const contactButton = document.querySelector('.absolute.top-4.left-4 button');
+            contactButton.classList.add('focus-highlight');
+        } catch (error) {
+            console.error('Error in openContactDialog:', error);
+        }
+    }
+
+    function closeContactDialog() {
+        try {
+            const contactDialog = document.getElementById('contactDialog');
+            contactDialog.style.display = 'none';
+
+            // Remove focus styling from the "Contact Us" button
+            const contactButton = document.querySelector('.absolute.top-4.left-4 button');
+            contactButton.classList.remove('focus-highlight');
+        } catch (error) {
+            console.error('Error in closeContactDialog:', error);
+        }
+    }
+
+    document.getElementById('otpButton').addEventListener('click', function () {
+        try {
+            // Call the OTP API endpoint here using fetch
+            fetch('/send_otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Adjust content type if needed
+                    // Add any other headers required by your API
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageElement = document.getElementById('otpMessage');
+                if (data.success) {
+                    messageElement.textContent = 'OTP sent successfully!';
+                    messageElement.style.color = 'green';
+                } else if (data.errorType === 'customError') {
+                    messageElement.textContent = data.errorMessage;
+                    messageElement.style.color = 'red'; // Display in green for success
+                } else {
+                    messageElement.textContent = 'Failed to send OTP';
+                    messageElement.style.color = 'red'; // Display in red for failure
+                }
+                setTimeout(function () {
+                    messageElement.textContent = '';
+                }, 2000); // Remove message after 1 second
+            })
+            .catch(error => {
+                console.error('Error in OTP button click:', error);
+            });
+        } catch (error) {
+            console.error('Error in OTP button click:', error);
+        }
+    });
+
+    function focusElements() {
+        try {
+            const elementsToHighlight = document.querySelectorAll('.highlightable');
+            elementsToHighlight.forEach(element => {
+                element.classList.toggle('focus-highlight');
+            });
+        } catch (error) {
+            console.error('Error in focusElements:', error);
+        }
+    }
+
+    function openAccessibilityDialog() {
+        try {
+            const accessibilityDialog = document.getElementById('accessibilityDialog');
+            accessibilityDialog.style.display = 'flex';
+        } catch (error) {
+            console.error('Error in openAccessibilityDialog:', error);
+        }
+    }
+
+    function closeAccessibilityDialog() {
+        try {
+            const accessibilityDialog = document.getElementById('accessibilityDialog');
+            accessibilityDialog.style.display = 'none';
+        } catch (error) {
+            console.error('Error in closeAccessibilityDialog:', error);
+        }
+    }
+</script>
+
+
+</body>
+</html>

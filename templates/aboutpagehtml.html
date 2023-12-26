@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://unpkg.com/framer-motion@5.11.3/dist/framer-motion.umd.min.js"></script>
+    <title>Welcome to a new era of authentication!</title>
+    <style>
+        .white-form {
+            padding: 5 14rem;
+            background-color: white;
+            border-radius: 0.400rem;
+            max-width: 3xl;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .white-form p {
+            max-width: 85%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .focus-highlight {
+            outline: 2px solid orange;
+            outline-offset: -2px;
+        }
+
+        .zoomed {
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
+
+        .action-button {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .action-button button {
+            padding: 1rem;
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 11;
+        }
+
+        .action-button button:hover {
+            background-color: #2d3748;
+        }
+
+        .focus-highlight-animation {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                outline-width: 2px;
+            }
+
+            50% {
+                outline-width: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <header class="absolute w-full z-30">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <nav class="flex flex-grow">
+                    <ul class="flex flex-grow justify-end flex-wrap items-center">
+                        <li>
+                            <button onclick="navigate('/registration');" class='font-medium text-white px-5 py-3 hover:text-gray-300'>
+                                <span>Sign Up</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="navigate('/signin_page');" class='font-medium text-white px-5 py-3 hover:text-gray-300'>
+                                <span>Sign In</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openAccessibilityPopup()" class='font-medium text-white px-5 py-3 hover:text-gray-300'>
+                                <span>Accessibility</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="navigate('/about');" class='font-medium text-white px-5 py-3 hover:text-gray-300'>
+                                <span>About</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openContactDialog()" class='font-medium text-white px-5 py-3 hover:text-gray-300'>
+                                <span>Contact Us</span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class='flex-grow'>
+        <section class='relative'>
+            <div class='absolute inset-0 h-128 pt-16 box-content bg-gradient-to-br from-purple-500 to-blue-700 min-h-screen'></div>
+            <div class='relative max-w-6xl mx-auto px-4 sm:px-6'>
+                <div class='pt-4 pb-12 md:pt-20 md:pb-20'>
+                    <div class="flex flex-col items-start">
+                        <img class='mx-auto mb-8' src='static/signLogo.png' alt='Sign Logo' style='width: 15%; height: 15%; margin-left: -108px; margin-top: -64px;'>
+                        <h1 class='font-extrabold leading-tighter tracking-tighter mb-4 focus-highlight-animation text-white text-xl'
+                            style='margin-left: -112px; margin-top: -34px;'>
+                            Sign in with a Wave
+                        </h1>
+                    </div>
+                    <div class='text-center pb-12 md:pb-16' style='padding-bottom: 8rem;'>
+                        <div class='white-form bg-white p-12 rounded-md max-w-5xl mx-auto text-black focus-highlight-animation'>
+                        <!-- Adjusted paragraph text for symmetry -->
+                             <p class='text-lg text-gray-800 font-mono'>
+                            Patients with adermatolyphia can more readily authenticate themselves by using the Sign in with a Wave website.
+                            The loss of a fingerprint is known as aderma- tolyphia, and our goal is to develop an authentication method
+                            that will provide these individuals with an accurate way to authenticate securely. This project is being
+                            worked on by four driven girls who hope to encourage people to take attention to dermatoglyphics, especially
+                            in this modern age. We are pleased to introduce the OTP generator, which enables users to quickly and easily
+                            authent- ticate via hand signals. By utilizing hand gestures that match the 4-digit code and delivering an OTP,
+                            you can rapidly authenticate yourself. Additional conc- erns include individuals who can access this website but
+                            have disabilities such as cognitive impairments or visual impairments. You can also encourage others to utilize
+                            this project as a model to add this type of authentication protocol elsewhere, similar to face ID and fingerprint
+                            authentication.
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="accessibilityPopup" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white p-8 rounded-md max-w-md text-center">
+            <button onclick="zoomInElements()" class='font-medium text-white px-5 py-3 bg-blue-600 hover:bg-blue-700  rounded'>
+                <span id="zoomButton">Zoom In</span>
+            </button>
+            <button onclick="focusElements()" class='font-medium text-white px-5 py-3 bg-blue-600 hover:bg-blue-700 t rounded'>
+                Focus
+            </button>
+            <button onclick="closeAccessibilityPopup()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+        </div>
+    </div>
+
+    <div id="contactDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white p-8 rounded-md max-w-md" id="contactDialogContent">
+            <div class="zoom-container">
+                <p class="text-lg text-gray-800">We are a group of four enthusiastic programmers named Karmel, Haya, Razan, and Layan. 
+                We think that in a world full of advancements and technology, any individual in this society, no matter their background, 
+                should authenticate themselves safely. Please get in touch with us at: <br>
+                Phone number: +966-58-226-6073
+                <br>Email: signwithawave@gmail.com</p>
+            </div>
+            <button id="closeButton" onclick="closeContactDialog()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('a').forEach(function (element) {
+            element.addEventListener('click', function (event) {
+                event.preventDefault();
+                navigate(element.getAttribute('href'));
+            });
+        });
+
+        function navigate(url) {
+            window.location.href = url;
+        }
+
+        function openAccessibilityPopup() {
+            document.getElementById('accessibilityPopup').style.display = 'flex';
+        }
+
+        function closeAccessibilityPopup() {
+            document.getElementById('accessibilityPopup').style.display = 'none';
+        }
+
+        function zoomInElements() {
+            const zoomButton = document.getElementById('zoomButton');
+            const elementsToZoom = document.querySelectorAll('button, a, input, select, textarea, p');
+            const contactDialogContent = document.getElementById('contactDialogContent');
+
+            if (zoomButton.innerText === 'Zoom In') {
+                elementsToZoom.forEach(element => {
+                    element.classList.toggle('zoomed');
+                });
+
+                contactDialogContent.style.transform = 'scale(1.2)';
+                contactDialogContent.style.width = '120%';
+                contactDialogContent.querySelector('p').style.paddingLeft = '8px';
+
+                zoomButton.innerText = 'Zoom Out';
+            } else {
+                elementsToZoom.forEach(element => {
+                    element.classList.remove('zoomed');
+                });
+
+                contactDialogContent.style.transform = 'scale(1)';
+                contactDialogContent.querySelector('p').style.paddingLeft = '0px';
+
+                zoomButton.innerText = 'Zoom In';
+            }
+
+            closeContactDialog();
+            closeAccessibilityPopup();
+        }
+
+        function focusElements() {
+            const elementsToHighlight = document.querySelectorAll('button, a, input, select, textarea, p');
+            elementsToHighlight.forEach(element => {
+                element.classList.toggle('focus-highlight');
+            });
+            closeAccessibilityPopup();
+        }
+
+        function openContactDialog() {
+            document.getElementById('contactDialog').style.display = 'flex';
+        }
+
+        function closeContactDialog() {
+            document.getElementById('contactDialog').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

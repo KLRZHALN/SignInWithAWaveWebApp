@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Tailwind CSS stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        .focus-highlight {
+            outline: 2px solid orange;
+            outline-offset: -2px;
+        }
+
+#accessibilityDialog .dialog-content button {
+    margin-top: 8px; /* Add some spacing between buttons */
+}
+
+	.action-button {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 10;
+        }
+	.action-button button {
+            padding: 1rem;
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 11; /* Ensure the button is above other elements */
+        }
+
+        .action-button button:hover {
+            background-color: #2d3748;
+        }
+
+
+        .dialog-content {
+            z-index: 9999; /* Set a high z-index value */
+        }
+
+        .zoomed {
+            font-size: 1.5em;
+        }
+
+        .zoomed .smaller {
+            font-size: 0.8em;
+        }
+
+        .zoomed label {
+            font-size: 1.2em;
+        }
+    </style>
+
+	
+
+    <title>Create Account</title>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-blue-700 relative">
+
+    <!-- Image on top left, 50% bigger -->
+    <div class="absolute top-4 left-4">
+        <img src='static/signLogo.png' alt="Logo" style="width: 40%; height: 40%;">
+    </div>
+
+    <!-- Sign in with a Wave title on top left -->
+    <div class="absolute top-4 left-4 flex flex-col items-start" style="margin-top: 164px;">
+        <h1 class='font-extrabold leading-tighter tracking-tighter mb-4 focus-highlight-animation text-white text-xl' style='margin-left: -5px;'>
+            Sign in with a Wave
+        </h1>
+    </div>
+
+    <!-- Accessibility and Contact Us buttons container in the top right -->
+    <div class="absolute top-4 right-4 flex space-x-6">
+
+        <!-- Accessibility button -->
+        <button onclick="openAccessibilityDialog()" class='font-medium text-white hover:text-gray-300 highlightable' id="accessibilityButton">
+            Accessibility
+        </button>
+
+        <!-- Contact Us button -->
+        <button onclick="openContactDialog()" class='font-medium text-white hover:text-gray-300 highlightable' id="contactButton">
+            Contact Us
+        </button>
+    </div>
+
+    <!-- Container for the white box -->
+    <div class="relative">
+        <div class="bg-white p-10 rounded-xl shadow-2xl w-96">
+            <h1 class="text-3xl font-bold text-center mb-4 highlightable">Create Account</h1>
+            <form id="signUpForm" action="/registration" method="POST">
+                <div class="mb-5 highlightable" id="nameContainer">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-600">
+                        Full Name
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none"
+                        required
+                    />
+                </div>
+                <div class="mb-5 highlightable" id="emailContainer">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-600">
+                        Email Address
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none"
+                        required
+                    />
+                    <p id="emailError" class="text-red-500 text-sm mt-2"></p>
+                </div>
+                <div class="mb-5 highlightable" id="passwordContainer">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-600">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none"
+                        required
+                    />
+                    <div class="flex items-center mt-2">
+                        <input type="checkbox" id="rememberMe" name="rememberMe" class="text-blue-600 form-checkbox rounded focus:outline-none">
+                        <label for="rememberMe" class="ml-2 text-gray-600 text-sm">Remember Me</label>
+                    </div>
+                    <p id="passwordError" class="text-red-500 text-sm mt-2"></p>
+                </div>
+                <button id="signUpButton"
+    type="submit"
+    class="w-full p-3 text-sm font-bold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring highlightable"
+>
+    Sign Up
+</button>
+            </form>
+            <p class="mt-4 text-sm text-center text-gray-400 highlightable">
+                Already have an account?
+                <a
+                    href="#"
+                    onclick="event.preventDefault(); navigate('/signin_page');"
+                    class="text-blue-600 hover:underline"
+                >
+                    Sign in
+                </a>
+            </p>
+        </div>
+    </div>
+    <!-- Accessibility Dialog -->
+<div id="accessibilityDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="dialog-content bg-white p-8 rounded-md text-center">
+        <button onclick="toggleZoomButton()" class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 transition duration-150 ease-in-out rounded px-4 py-2' id="zoomButtonDialog">
+            Zoom In
+        </button>
+        <button onclick="focusElements()" class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 rounded transition duration-150 ease-in-out px-4 py-2' id="focusButton">
+            Focus
+        </button>
+        <button onclick="closeAccessibilityDialog()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+    </div>
+</div>
+
+  
+	<!-- Contact Us Dialog -->
+<div id="contactDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-8 rounded-md max-w-md" id="contactDialogContent">
+        <div class="zoom-container">
+            <p class="text-lg text-gray-800">We are a group of four enthusiastic programmers named Karmel, Haya, Razan, and Layan. 
+            We think that in a world full of advancements and technology, any individual in this society, no matter their background, 
+            should authenticate themselves safely. Please get in touch with us at: <br>
+            Phone number: +966-58-226-6073
+            <br>Email: signwithawave@gmail.com</p>
+        </div>
+        <button id="closeButton" onclick="closeContactDialog()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+    </div>
+</div>
+
+    
+    <script>
+	
+        document.getElementById('signUpForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Clear error messages
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    const email = emailInput.value;
+
+    // Email conditions
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        emailError.textContent = "Enter a valid email address.";
+        return;
+    }
+
+    // Password conditions
+    const passwordInput = document.getElementById('password');
+    const passwordError = document.getElementById('passwordError');
+    const password = passwordInput.value;
+
+    // Password conditions
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigits = /\d/.test(password);
+    const hasSpecialChars = /[-_!@#$%^&*(),.?":{}|<>]/.test(password); // Include "-" and "_"
+
+    if (password.length < 8 || !hasUpperCase || !hasLowerCase || !hasDigits || !hasSpecialChars) {
+        passwordError.textContent = "Password must be at least 8 characters long and include uppercase, lowercase, digits, and special characters (- _ ! @ # $ % ^ & * ( ) , . ? \" : { } | < >).";
+        return;
+    }
+
+    // Get the email and password from the form.
+    const formData = new FormData(this);
+
+    const rememberMeCheckbox = document.getElementById('rememberMe');
+    const rememberMeValue = rememberMeCheckbox.checked;
+
+    // Include rememberMe value in the form data
+    formData.append('rememberMe', rememberMeValue);
+
+    // Make a fetch request to the registration endpoint.
+    fetch('/registration', {
+        method: 'POST',
+        body: formData
+    })
+    // Inside the fetch success block
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Extract and store the username
+            const registeredUsername = data.username;
+
+            // Redirect to the button page with the username parameter
+            window.location.href = `/buttonpage?username=${registeredUsername}`;
+        } else {
+            // Handle registration failure
+            alert(data.message); // Display an alert with the error message
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+	
+        function openContactDialog() {
+        const contactDialog = document.getElementById('contactDialog');
+        contactDialog.style.display = 'flex';
+
+        // Apply focus styling to the "Contact Us" button
+        const contactButton = document.querySelector('.absolute.bottom-4.right-4 button');
+        
+    }
+
+    function closeContactDialog() {
+        const contactDialog = document.getElementById('contactDialog');
+        contactDialog.style.display = 'none';
+
+        // Remove focus styling from the "Contact Us" button
+        const contactButton = document.querySelector('.absolute.bottom-4.right-4 button');
+        contactButton.classList.remove('focus-highlight');
+    }
+
+	function navigate(url) {
+	console.log('Navigating to:', url);
+        window.location.href = url; // Redirect to the specified URL
+    }
+
+
+    function openAccessibilityDialog() {
+        const accessibilityDialog = document.getElementById('accessibilityDialog');
+        accessibilityDialog.style.display = 'flex';
+    }
+
+    function closeAccessibilityDialog() {
+        const accessibilityDialog = document.getElementById('accessibilityDialog');
+        accessibilityDialog.style.display = 'none';
+    }
+
+    function toggleZoomButton() {
+    const signUpContent = document.querySelector('.bg-white');
+    const contactButton = document.getElementById('contactButton');
+    const createAccountTitle = document.querySelector('.bg-white h1');
+    const signInLink = document.querySelector('.text-gray-400.highlightable');
+    const accessibilityButton = document.getElementById('accessibilityButton');
+    const signUpButton = document.getElementById('signUpButton'); // Use the ID
+    const zoomButton = document.getElementById('zoomButtonDialog');
+    
+
+    const isZoomed = signUpContent.classList.toggle('zoomed');
+
+    if (isZoomed) {
+        contactButton.style.transform = 'scale(1.2)';
+        createAccountTitle.style.fontSize = '1.5em';
+        signInLink.style.fontSize = '0.8em';
+        accessibilityButton.style.transform = 'scale(1.2)';
+        signUpButton.style.transform = 'scale(1.3)'; // Add this line
+        zoomButton.textContent = 'Zoom Out'; // Change text to 'Zoom Out'
+    } else {
+        contactButton.style.transform = 'scale(1)';
+        createAccountTitle.style.fontSize = '';
+        signInLink.style.fontSize = '';
+        accessibilityButton.style.transform = 'scale(1)';
+	signUpButton.style.transform = 'scale(1)'; // Add this line
+        zoomButton.textContent = 'Zoom In'; // Change text back to 'Zoom In'
+    }
+
+    // Apply similar changes for the Contact Us Dialogue size
+    const contactDialogContent = document.getElementById('contactDialogContent');
+    contactDialogContent.style.transform = isZoomed ? 'scale(1.2)' : 'scale(1)';
+    contactDialogContent.style.width = isZoomed ? '120%' : '';
+    contactDialogContent.querySelector('p').style.paddingLeft = isZoomed ? '8px' : '0px';
+    closeButton.style.position = 'relative';
+    closeButton.style.top = isZoomed ? '10px' : '0px';
+
+    closeAccessibilityDialog();
+}
+
+
+    function focusElements() {
+        const elementsToHighlight = document.querySelectorAll('.highlightable');
+        elementsToHighlight.forEach(element => {
+            element.classList.toggle('focus-highlight');
+        });
+        closeAccessibilityDialog();
+    }
+
+</script>
+</body>
+
+</html>

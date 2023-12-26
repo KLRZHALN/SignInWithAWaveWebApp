@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Tailwind CSS stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        .focus-highlight {
+            outline: 2px solid orange;
+            outline-offset: -2px;
+        }
+        .zoomed {
+            font-size: 1.5em;
+        }
+        .zoomed .smaller {
+            font-size: 0.8em;
+        }
+        .zoomed label {
+            font-size: 1.2em;
+        }
+        .dialog-content {
+            z-index: 9999; /* Set a high z-index value */
+        }
+    </style>
+    <script>
+        function navigate(url) {
+            window.location.href = url; // Redirect to the specified URL
+        }
+    </script>
+    <title>Sign In</title>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-blue-700 relative">
+
+    <!-- Logo and Title container on top left -->
+    <div class="absolute top-4 left-4 flex flex-col items-start">
+
+        <!-- Logo -->
+        <img src='static/signLogo.png' alt="Logo" style="width: 40%; height: 40%;">
+
+        <!-- Sign in with a Wave title -->
+        <h1 class='font-extrabold leading-tighter tracking-tighter mb-4 focus-highlight-animation text-white text-xl'
+            style='margin-left: -5px;'>
+            Sign in with a Wave
+        </h1>
+    </div>
+
+    <!-- Accessibility and Contact Us buttons container in the top right -->
+    <div class="absolute top-4 right-4 flex space-x-6">
+
+        <!-- Accessibility button -->
+        <button onclick="openAccessibilityDialog()" class='font-medium text-white hover:text-gray-300 highlightable'
+            id="accessibilityButton">
+            Accessibility
+        </button>
+
+        <!-- Contact Us button -->
+        <button onclick="openContactDialog()" class='font-medium text-white hover:text-gray-300 highlightable'
+            id="contactButton">
+            Contact Us
+        </button>
+    </div>
+
+    <!-- Accessibility Dialog -->
+    <div id="accessibilityDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="dialog-content bg-white p-8 rounded-md text-center">
+            <button onclick="toggleZoomButton()"
+                class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 rounded px-4 py-4'
+                id="zoomButtonDialog">
+                Zoom In
+            </button>
+            <button onclick="focusElements()"
+                class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 rounded px-4 py-4'
+                id="focusButton">
+                Focus
+            </button>
+            <button onclick="closeAccessibilityDialog()"
+                class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+        </div>
+    </div>
+
+    <!-- Sign In Content -->
+    <div class="bg-white p-10 rounded-xl shadow-2xl w-96 relative" id="signInContent">
+        <!-- Zoom and Focus buttons in Accessibility Dialog -->
+        <div id="accessibilityDialogContent"
+            class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+            <div class="dialog-content bg-white p-8 rounded-md text-center">
+                <button onclick="toggleZoomButton()"
+                    class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 rounded px-4 py-2'
+                    id="zoomButton">
+                    Zoom In
+                </button>
+                <button onclick="focusElements()"
+                    class='font-medium text-white hover:text-gray-300 text-lg bg-blue-600 rounded px-4 py-2'
+                    id="focusButton">
+                    Focus
+                </button>
+                <button onclick="closeAccessibilityDialog()"
+                    class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold text-center mb-4 highlightable" id="signInTitle">Sign In</h1>
+        <form id="signInForm" action="/signin_page" method="POST">
+            <div class="mb-5 highlightable" id="emailContainer">
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-600 smaller">
+                    Email Address
+                </label>
+                <input type="email" id="email" name="email"
+                    class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" required />
+            </div>
+            <div class="mb-5 highlightable" id="passwordContainer">
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-600 smaller">
+                    Password
+                </label>
+                <input type="password" id="password" name="password"
+                    class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" required />
+            </div>
+            <div class="flex items-center mb-5 highlightable" id="rememberMeContainer">
+                <input type="checkbox" id="rememberMe" name="rememberMe"
+                    class="text-blue-600 form-checkbox rounded focus:outline-none" />
+                <label for="rememberMe" class="ml-2 text-gray-600 text-sm smaller">
+                    Remember Me
+                </label>
+            </div>
+            <button type="submit" class="w-full p-3 text-sm font-bold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring sign-in-button"> Sign In </button>
+        </form>
+        <p class="mt-4 text-sm text-center text-gray-400 highlightable smaller" id="signUpText">
+            Don't have an account? <a href=""
+                onclick="event.preventDefault(); navigate('/registration');" class="text-blue-600 hover:underline">Sign
+                up</a>
+        </p>
+    </div>
+
+    <!-- Contact Us Dialog -->
+<div id="contactDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-8 rounded-md max-w-md" id="contactDialogContent">
+        <div class="zoom-container">
+            <p class="text-lg text-gray-800">We are a group of four enthusiastic programmers named Karmel, Haya, Razan, and Layan. 
+            We think that in a world full of advancements and technology, any individual in this society, no matter their background, 
+            should authenticate themselves safely. Please get in touch with us at: <br>
+            Phone number: +966-58-226-6073
+            <br>Email: signwithawave@gmail.com</p>
+        </div>
+        <button id="closeButton" onclick="closeContactDialog()" class="mt-4 btn text-white bg-blue-600 hover:bg-blue-700 w-full py-2 px-3 rounded-md">Close</button>
+    </div>
+</div>
+
+    <script>
+        function navigate(url) {
+            window.location.href = url; // Redirect to the specified URL
+        }
+
+        function toggleZoomButton() {
+            const signInContent = document.getElementById('signInContent');
+            const accessibilityButton = document.getElementById('accessibilityButton');
+            const contactButton = document.getElementById('contactButton');
+	    const signInButton = document.querySelector('.sign-in-button'); // Add this line
+
+            const isZoomed = signInContent.classList.toggle('zoomed');
+            accessibilityButton.style.transform = isZoomed ? 'scale(1.2)' : 'scale(1)';
+            contactButton.style.transform = isZoomed ? 'scale(1.2)' : 'scale(1)';
+	    signInButton.style.transform = isZoomed ? 'scale(1.3)' : 'scale(1)'; // Add this line
+
+            const zoomButton = document.getElementById('zoomButton');
+            const focusButton = document.getElementById('focusButton');
+            const signInTitle = document.getElementById('signInTitle');
+            const signUpText = document.getElementById('signUpText');
+            const rememberMeLabel = document.querySelector('#rememberMeContainer label');
+            const emailLabel = document.querySelector('#emailContainer label');
+            const passwordLabel = document.querySelector('#passwordContainer label');
+
+            zoomButton.textContent = isZoomed ? 'Zoom Out' : 'Zoom In';
+            focusButton.style.order = isZoomed ? -1 : 1;
+            signInTitle.style.fontSize = isZoomed ? '2em' : '';
+            signUpText.style.fontSize = isZoomed ? '0.8em' : '';
+            rememberMeLabel.style.fontSize = isZoomed ? '1.2em' : '0.8em';
+            emailLabel.style.fontSize = isZoomed ? '1.2em' : '0.8em';
+            passwordLabel.style.fontSize = isZoomed ? '1.2em' : '0.8em';
+
+	    
+        const contactDialogContent = document.getElementById('contactDialogContent');
+        contactDialogContent.style.transform = isZoomed ? 'scale(1.2)' : 'scale(1)';
+        contactDialogContent.style.width = isZoomed ? '120%' : '';
+        contactDialogContent.querySelector('p').style.paddingLeft = isZoomed ? '8px' : '0px';
+        closeButton.style.position = 'relative';
+        closeButton.style.top = isZoomed ? '10px' : '0px';
+
+            closeAccessibilityDialog();
+
+            fetch('/signin_page', {
+                    method: 'POST',
+                    body: new URLSearchParams(new FormData(document.getElementById('signInForm'))),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const signedInUsername = data.username;
+                        alert(`Welcome, ${signedInUsername}!`);
+                        window.location.href = 'http://127.0.0.1:5000/buttonpage'; // Redirect to the menu page
+                    } else {
+                        const errorMessageContainer = document.getElementById('signInErrorMessage');
+                        errorMessageContainer.textContent = data.message;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during sign-in:', error);
+                });
+        }
+
+        function focusElements() {
+            const elementsToHighlight = document.querySelectorAll('.highlightable');
+            elementsToHighlight.forEach(element => {
+                element.classList.toggle('focus-highlight');
+            });
+            closeAccessibilityDialog();
+        }
+
+        function openContactDialog() {
+            const contactDialog = document.getElementById('contactDialog');
+            contactDialog.style.display = 'flex';
+
+            const contactButton = document.getElementById('contactButton');
+        }
+
+        function closeContactDialog() {
+            const contactDialog = document.getElementById('contactDialog');
+            contactDialog.style.display = 'none';
+
+            const contactButton = document.getElementById('contactButton');
+        }
+
+        function openAccessibilityDialog() {
+            const accessibilityDialogContent = document.getElementById('accessibilityDialogContent');
+            accessibilityDialogContent.style.display = 'flex';
+
+            const accessibilityButton = document.getElementById('accessibilityButton');
+        }
+
+        function closeAccessibilityDialog() {
+            const accessibilityDialogContent = document.getElementById('accessibilityDialogContent');
+            accessibilityDialogContent.style.display = 'none';
+
+            const accessibilityButton = document.getElementById('accessibilityButton');
+        }
+    </script>
+
+</body>
+
+</html>

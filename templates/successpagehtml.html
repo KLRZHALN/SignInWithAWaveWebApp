@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Tailwind CSS stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <!-- Include the Framer Motion library -->
+    <script src="https://unpkg.com/framer-motion@5.11.3/dist/framer-motion.umd.min.js"></script>
+    <title>Success!</title>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-blue-700 relative">
+
+    <!-- Logo and Title container on top left -->
+    <div class="absolute top-4 left-4 flex flex-col items-start">
+
+        <!-- Logo -->
+        <img src='static/signLogo.png' alt="Logo" style="width: 40%; height: 40%;">
+
+        <!-- Sign in with a Wave title -->
+        <h1 class='font-extrabold leading-tighter tracking-tighter mb-4 focus-highlight-animation text-white text-xl'
+            style='margin-left: -5px;'>
+            Sign in with a Wave
+        </h1>
+    </div>
+
+    <!-- Success Message Container -->
+    <div class="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
+        <!-- Checkmark Icon -->
+        <div class="flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-green-500">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+        </div>
+        <!-- Success Message Content -->
+        <div>
+            <div class="text-xl font-medium text-black">Success!</div>
+            <p class="text-gray-500">
+                You have successfully signed in! Redirecting, please wait.
+            </p>
+        </div>
+    </div>
+
+    <!-- Include the script to handle animations -->
+    <script>
+        // Define framer-motion variants
+        const containerVariants = {
+            hidden: {
+                opacity: 0,
+                y: '100vh',
+            },
+            visible: {
+                opacity: 1,
+                y: '0',
+                transition: {
+                    type: 'spring',
+                    stiffness: 260,
+                    damping: 20,
+                },
+            },
+        };
+
+        const checkVariants = {
+            hidden: {
+                pathLength: 0,
+                opacity: 0,
+            },
+            visible: {
+                pathLength: 1,
+                opacity: 1,
+                transition: {
+                    pathLength: {
+                        delay: 0.5,
+                        type: 'spring',
+                        duration: 1.5,
+                        bounce: 0,
+                    },
+                    opacity: { duration: 0.01 },
+                },
+            },
+        };
+
+        // Apply framer-motion animations
+        const container = document.querySelector('.max-w-md');
+        container.style.opacity = containerVariants.visible.opacity;
+        container.style.transform = `translateY(${containerVariants.visible.y})`;
+
+        const checkmark = document.querySelector('.text-green-500');
+        checkmark.style.opacity = checkVariants.visible.opacity;
+        checkmark.style.strokeDasharray = checkmark.getTotalLength();
+        checkmark.style.strokeDashoffset = checkmark.getTotalLength();
+        checkmark.style.animation = `dash ${checkVariants.visible.transition.pathLength.duration}s ease-in-out forwards`;
+
+        // You might need to implement additional logic for animations and transitions as needed
+    </script>
+
+    <!-- Additional CSS for animations -->
+    <style>
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+    <script>
+        fetch('/success_page')
+            .then(response => response.json())
+            .then(data => {
+                // Redirect to the new route received in the JSON response
+                window.location.href = data.redirect;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+
+        <!-- Include Socket.IO client library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+    </script>
+    <script>
+      var socketi = io.connect('http://' + document.domain + ':' + location.port);    
+      socketi.on('time_completed', function() {
+          window.location.href = '/final';
+      });
+    </script>
+</body>
+</html>
